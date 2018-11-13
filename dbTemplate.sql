@@ -1,20 +1,19 @@
---CREATE DATABASE sicfdb;
+--CREATE DATABASE sicdp;
 
-CREATE TABLE despesas(
-    codDespesas SERIAL NOT NULL PRIMARY KEY,
-    nome VARCHAR NOT NULL,
-    valor FLOAT NOT NULL,
-    data DATE,
-    multa FLOAT,
-    juros FLOAT
+CREATE TABLE estado_patrimonio(
+    codEstado SERIAL NOT NULL PRIMARY KEY,
+    descricao VARCHAR(50)
 );
 
-CREATE TABLE ganhos(
-    codGanhos SERIAL NOT NULL PRIMARY KEY,
-    nome VARCHAR NOT NULL,
-    valor FLOAT NOT NULL,
-    data DATE
+CREATE TABLE patrimonio(
+    codPatrimonio NOT NULL PRIMARY KEY,
+    --nome VARCHAR NOT NULL,
+    --valor FLOAT NOT NULL,
+    --data DATE,
+    --valoratual FLOAT,
+    estado INT REFERENCES estado_patrimonio(codEstado)
 );
+
 
 CREATE TABLE usuario(
     codUsuario SERIAL NOT NULL PRIMARY KEY,
@@ -25,9 +24,14 @@ CREATE TABLE usuario(
     --celular VARCHAR NOT NULL
 );
 
-CREATE TABLE Conta(
-    codConta SERIAL NOT NULL PRIMARY KEY,
-    competencia INT NOT NULL,
-    saldo FLOAT NOT NULL,
-    codUsu INT REFERENCES usuario(codUsu)
-);
+INSERT INTO usuario(nome, login, senha) 
+VALUES ('Administrador', 'admin', MD5('123456'));
+
+INSERT INTO estado_patrimonio(descricao) 
+VALUES ('AGUARDANDO DESFAZIMENTO');
+
+INSERT INTO estado_patrimonio(descricao) 
+VALUES ('AGUARDANDO PROCESSO');
+
+INSERT INTO estado_patrimonio(descricao) 
+VALUES ('BAIXADO');
