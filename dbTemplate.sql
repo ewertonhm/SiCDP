@@ -6,7 +6,7 @@ CREATE TABLE estado_patrimonio(
 );
 
 CREATE TABLE patrimonio(
-    codPatrimonio NOT NULL PRIMARY KEY,
+    codPatrimonio INT NOT NULL PRIMARY KEY,
     --nome VARCHAR NOT NULL,
     --valor FLOAT NOT NULL,
     --data DATE,
