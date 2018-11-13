@@ -24,14 +24,14 @@ class Patrimonio {
     }
     
     public function excluir_patrimonio(){
-        $this->_dbPatrimonio->delete($this->get_tabelaPatrimonio(),$this->get_codPatrimonio());
+        $this->_dbPatrimonio->delete($this->get_tabelaPatrimonio(),$this->get_codPatrimonio(),'codPatrimonio');
     }
     
     protected function alterar_patrimonio(){
         $patrimonio = [
             'estado'=>$this->get_estado()
             ];
-        $this->_dbPatrimonio->update($this->get_tabelaPatrimonio(),strval($this->get_codPatrimonio()),$patrimonio);
+        $this->_dbPatrimonio->update($this->get_tabelaPatrimonio(),strval($this->get_codPatrimonio()),$patrimonio,'codPatrimonio');
     }
     
     public function ler_patrimonio(){

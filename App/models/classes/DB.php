@@ -17,7 +17,7 @@ class DB {
     
     private function __construct() {
         try{
-            $this->_pdo = new PDO('pgsql:host=127.0.0.1;port=8269;dbname=sicdp','postgres','postgresql');
+            $this->_pdo = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=sicdp','postgres','postgresql');
             //$this->_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die($e->getMessage());
@@ -33,19 +33,14 @@ class DB {
     
     public function query($sql,$params = []){
         $this->_error = false;
-        var_dump($params);
         if($this->_query = $this->_pdo->prepare($sql)){
             $x = 1;
             if(is_array($params)){
-                var_dump($params);
-                echo 1;
                 foreach($params as $value){ 
                     $this->_query->bindValue($x, $value);
                     $x++;
                 }
             } else {
-                var_dump($params);
-                echo 2;
                 $this->_query->bindValue($x, $params);
             }
             if($this->_query->execute()){
@@ -82,7 +77,7 @@ class DB {
         }
     }
     
-    public function update($table,$id,$fields = []){
+    public function update($table,$id,$fields = [],$idField){
         $fieldString = '';
         $values = [];
         foreach($fields as $field => $value){
@@ -92,8 +87,7 @@ class DB {
         $fieldString = trim($fieldString);
         $fieldString = rtrim($fieldString,',');
         
-        $sql = "UPDATE {$table} SET {$fieldString} WHERE id = {$id}";
-        echo $sql;
+        $sql = "UPDATE {$table} SET {$fieldString} WHERE {$idField} = {$id}";
         if($this->query($sql,$values)){
             return true;
         } else {
@@ -102,8 +96,8 @@ class DB {
         
     }
     
-    public function delete($table,$id){        
-        $sql = "DELETE FROM {$table} WHERE id = {$id}";
+    public function delete($table,$id,$idField){        
+        $sql = "DELETE FROM {$table} WHERE {$idField} = {$id}";
         if(!$this->query($sql)->get_error()){
             return true;
         } else {
